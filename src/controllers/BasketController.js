@@ -4,6 +4,11 @@ module.exports = {
     addItem: async (req, res) => {
         try {
             const { productId, userId, quantity } = req.body;
+
+            if (userId !== req.user.id) {
+                return res.status(401).send({ message: 'Non autorisé' });
+            }
+
             const newItem = new BasketItem({ productId, userId, quantity });
 
             await newItem.save();
@@ -24,6 +29,10 @@ module.exports = {
         try {
             const { id } = req.params;
             const { userId } = req.body;
+
+            if (userId !== req.user.id) {
+                return res.status(401).send({ message: 'Non autorisé' });
+            }
 
             const removedItem = await BasketItem.findOneAndDelete({ _id: id, userId });
 
@@ -46,6 +55,10 @@ module.exports = {
     viewBasket: async (req, res) => {
         try {
             const { userId } = req.body;
+
+            if (userId !== req.user.id) {
+                return res.status(401).send({ message: 'Non autorisé' });
+            }
 
             const basketItems = await BasketItem.find({ userId });
             res.status(200).send(basketItems);
