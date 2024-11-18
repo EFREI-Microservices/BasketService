@@ -13,7 +13,7 @@ Documentation du BasketService
 git clone https://github.com/EFREI-Microservices/BasketService.git
 ```
 
-2. Pull une database MongoDB
+2. Pull une database MongoDB (⚠️ Cette étape ainsi que l'étape `3` peuvent être ignorées si vous l'avez déjà fait pour le `UserService`)
 ```bash
 docker pull mongodb/mongodb-community-server:latest
 ```
@@ -34,33 +34,26 @@ npm run start
 
 ## Endpoints
 
-L'API est accessible à l'adresse `http://localhost:8008/`
-
-Liste des endpoints :
+L'API est accessible à l'adresse `http://localhost:8008/`  
+Attention : tous les endpoints nécessitent un token JWT valide dans le header `Authorization`.  
+Liste des endpoints :  
 
 #### [POST] `/api/add`
-Ajouter un produit au panier
-`userId` doit correspondre à celui de l'utilisateur connecté via Token JWT
+Ajouter un produit au panier de l'utilisateur connecté
 ```json
 {
-    "productId": string,
-    "userId": int,
+    "productId": int,
     "quantity": int
 }
 ```
 
-#### [DELETE] `/api/remove/{productId}`
+#### [DELETE] `/api/remove`
 Supprimer un produit du panier de l'utilisateur connecté.
 ```json
 {
-    "userId": int
+    "productId": int
 }
 ```
 
 #### [GET] `/api/view`
 Affiche le panier de l'utilisateur connecté.
-```json
-{
-    "userId": int
-}
-```
